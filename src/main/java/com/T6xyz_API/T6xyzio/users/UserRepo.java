@@ -3,6 +3,6 @@ import java.util.UUID;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepo extends MongoRepository<UserDTO, UUID> {
-    
+public interface UserRepo extends MongoRepository<User, UUID> {
+    public User findByUsername(String username);
 }

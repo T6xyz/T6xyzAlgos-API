@@ -2,27 +2,27 @@ package com.T6xyz_API.T6xyzio.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.T6xyz_API.T6xyzio.exceptions.AppException;
+import com.T6xyz_API.T6xyzio.services.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
     @Autowired
-    private UserRepo userRepo;
+    private UserService userService;
 
-    @GetMapping("/getCSRF")
-    public CsrfToken getCSRF(HttpServletRequest request) {
-        return (CsrfToken) request.getAttribute("_csrf");
-    }
 
-    @PostMapping("/addUser")
-    public ResponseEntity<String> addUser() {
-        UserDTO testUser = new UserDTO("Da weed", "test", "test", false, false, false);
-        userRepo.save(testUser);
-        return ResponseEntity.ok("Response");
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity<UserDTO> authUser(@RequestBody CredentialsDTO userCredentials) throws AppException {
+        UserDTO user = userService.login(userCredentials);
+        return ResponseEntity.ok(user);
     }
 }
