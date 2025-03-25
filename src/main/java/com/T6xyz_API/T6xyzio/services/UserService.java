@@ -7,16 +7,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import com.T6xyz_API.T6xyzio.exceptions.AppException;
 import com.T6xyz_API.T6xyzio.mappers.UserMapper;
 import com.T6xyz_API.T6xyzio.users.CredentialsDTO;
+import com.T6xyz_API.T6xyzio.users.RegisterDTO;
 import com.T6xyz_API.T6xyzio.users.User;
 import com.T6xyz_API.T6xyzio.users.UserDTO;
 import com.T6xyz_API.T6xyzio.users.UserRepo;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 public class UserService {
     
@@ -26,6 +30,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
     private UserMapper userMapper;
 
     public UserDTO login(CredentialsDTO credentials) throws AppException {
@@ -43,5 +48,20 @@ public class UserService {
         } else {
             throw new AppException("Password is incorrect!", HttpStatus.BAD_REQUEST);
         }
-    }  
+    }
+
+    public UserDTO register(RegisterDTO credentials) {
+
+        User foundUser = userRepo.findByUsername(credentials.getUsername());
+
+        // Check if user exists
+        if (foundUser != null) {
+            throw new AppException("Username already exists!", HttpStatus.BAD_REQUEST);
+        }
+        // Create new user
+        User user = userMapper.registerToUser(credentials);
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(credentials.getPassword())));
+        User savedUser = userRepo.save(user);
+        return userMapper.toUserDTO(savedUser);
+    }
 }

@@ -14,5 +14,4 @@ public class CredentialsDTO {
     public CredentialsDTO(String username, String password) {
         this(username, password.toCharArray());
     }
-
 }
