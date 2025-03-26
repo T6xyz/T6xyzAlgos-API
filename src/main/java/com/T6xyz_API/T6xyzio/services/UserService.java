@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+import com.T6xyz_API.T6xyzio.enums.Roles;
 import com.T6xyz_API.T6xyzio.exceptions.AppException;
 import com.T6xyz_API.T6xyzio.mappers.UserMapper;
 import com.T6xyz_API.T6xyzio.users.CredentialsDTO;
@@ -61,6 +61,7 @@ public class UserService {
         // Create new user
         User user = userMapper.registerToUser(credentials);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(credentials.getPassword())));
+        user.setRole(Roles.USER);
         User savedUser = userRepo.save(user);
         return userMapper.toUserDTO(savedUser);
     }

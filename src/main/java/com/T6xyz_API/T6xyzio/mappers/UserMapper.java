@@ -14,5 +14,6 @@ public interface UserMapper {
 
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "isPremium", ignore = true)
+    @Mapping(target = "role", ignore = true)
     User registerToUser(RegisterDTO credentials);
 }

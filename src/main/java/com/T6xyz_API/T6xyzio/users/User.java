@@ -2,6 +2,8 @@ package com.T6xyz_API.T6xyzio.users;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.T6xyz_API.T6xyzio.enums.Roles;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +20,5 @@ public class User {
     private Boolean isStudent;
     private Boolean isPremium;
     private Boolean agreedTerms;
+    private Roles role;
 }
