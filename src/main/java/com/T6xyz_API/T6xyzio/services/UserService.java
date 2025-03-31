@@ -39,14 +39,14 @@ public class UserService {
 
         // Check if user is not found
         if (user == null) {
-            throw new AppException("User was not found!", HttpStatus.NOT_FOUND);
+            throw new AppException("User " + credentials.getUsername() + " does not exist", HttpStatus.NOT_FOUND);
         }
 
         // Valdiate password
         if (passwordEncoder.matches(CharBuffer.wrap(credentials.getPassword()), user.getPassword())) {
             return userMapper.toUserDTO(user);
         } else {
-            throw new AppException("Password is incorrect!", HttpStatus.BAD_REQUEST);
+            throw new AppException("Password is incorrect", HttpStatus.BAD_REQUEST);
         }
     }
 
