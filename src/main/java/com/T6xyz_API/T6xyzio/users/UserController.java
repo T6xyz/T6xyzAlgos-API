@@ -38,7 +38,7 @@ public class UserController {
     public ResponseEntity<UserDTO> registerUser(@RequestBody RegisterDTO registerCredentials) throws AppException {
         UserDTO user = userService.register(registerCredentials);
         user.setToken(userAuthProvider.createToken(user));
-        return ResponseEntity.created(URI.create("/users/" + user.getUsername())).body(user);
+        return ResponseEntity.created(URI.create("/u/" + user.getUsername())).body(user);
     }
 
     @GetMapping("/home")
